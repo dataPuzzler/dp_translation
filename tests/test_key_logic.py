@@ -75,11 +75,11 @@ def test_translation_key_retriever_finds_correct_keys_for_model_without_name_fie
         some_attr = sa.Column(sa.String, unique=True)
     
         @classmethod
-        def _get_translation_context(cls):
+        def get_translation_context(cls):
             return "test_db"
         
         @classmethod
-        def _get_translateable_attrs(cls) -> str:
+        def get_translateable_attrs(cls) -> str:
             return ["some_attr"]
 
     def fill_sample_table(session):
@@ -106,11 +106,11 @@ def test_translation_key_retriever_finds_correct_keys_for_model_with_unique_name
         name = sa.Column(sa.String, unique=True)
     
         @classmethod
-        def _get_translation_context(cls):
+        def get_translation_context(cls):
             return "test_db"
         
         @classmethod
-        def _get_translateable_attrs(cls) -> str:
+        def get_translateable_attrs(cls) -> str:
             return ["name"]
 
     def fill_sample_table(session):

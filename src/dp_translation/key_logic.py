@@ -46,10 +46,10 @@ class TranslationKeyRetriever:
         translation_keys = []
         translation_keys.append(model.get_logical_key_for_concept())
 
-        for attr in model.translateable_attrs:
+        for attr in model.get_translateable_attrs():
             translation_keys.append(model.get_logical_key_for_attr(attr))
 
         for instance in session.query(model).all():
-            for attr in model.translateable_attrs:
+            for attr in model.get_translateable_attrs():
                 translation_keys.append(instance.get_logical_key_for_attr_value(attr))
         return translation_keys
