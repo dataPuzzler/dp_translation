@@ -1,8 +1,8 @@
-.. image:: https://github.com/dataPuzzler/dp_json_util/actions/workflows/test.yml/badge.svg?branch=master&event=workflow_dispatch
-	:target: https://github.com/dataPuzzler/dp_json_util/actions/workflows/test.yml/badge.svg?branch=master&event=workflow_dispatch
+.. image:: https://github.com/dataPuzzler/dp_translation/actions/workflows/test.yml/badge.svg?branch=master&event=workflow_dispatch
+	:target: https://github.com/dataPuzzler/dp_translation/actions/workflows/test.yml/badge.svg?branch=master&event=workflow_dispatch
 	:alt: Unit-tests Badge
 
-dp_json_util
+dp_translation
 =============
 
-A tiny module to simplify the retrieval of local json files.
+A python package that prepares the setup of a translation database in conjunction with sqlalchemy and dp_sqlalchemy_wrapper
