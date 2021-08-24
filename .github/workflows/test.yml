@@ -1,0 +1,29 @@
+name: Unit-tests
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      - name: Upgrade infrastructure packages and install Tox
+        run:  |
+          pip install -U wheel
+          pip install -U setuptools
+          python -m pip install -U pip
+          pip install tox
+      - name: Run Tox using a specific py version 
+        # Run tox using the version of Python in `PATH`
+        run: tox -e py

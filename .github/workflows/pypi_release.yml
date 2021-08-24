@@ -1,0 +1,59 @@
+name: Upload a new Realase of the Python Package
+
+on:
+  workflow_dispatch:
+      inputs:
+        tag:
+          description: 'Tag (major.minor.patch) scheme'
+          required: true
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Bump Version
+      run: |
+        echo "${{ github.event.inputs.tag }}" > VERSION
+
+    - name: Install dependencies
+      run: |
+        echo "${{ github.event.inputs.tag }}" > VERSION
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+
+    - name: Build and publish python package
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py sdist bdist_wheel
+        twine upload dist/*
+
+    - name: setup git config
+      run: |
+          git config user.name "dataPuzzler CI"
+          git config user.email "<>"
+          
+    - name: commit and tag
+      run: |
+          git add VERSION
+          git commit -m "Update Version to ${{ github.event.inputs.tag }}"
+          git tag ${{ github.event.inputs.tag }}
+          git push origin master --tags
+          
+    - name: create git release
+      run: |
+          curl \
+          -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.actor }}/${{ github.event.repository.name }}/releases \
+          -d '{"tag_name":"${{ github.event.inputs.tag }}"}'
